@@ -1,20 +1,22 @@
-export default function ContactSection() {
-  const whatsappUrl =
-    'https://wa.me/905343500675?text=Merhaba%2C%20bilgi%20almak%20istiyorum.'
+import type { SiteContent } from '@/lib/content'
+import { c } from '@/lib/content'
+
+interface Props {
+  content?: SiteContent
+}
+
+export default function ContactSection({ content = {} }: Props) {
+  const baslik = c(content, 'iletisim_cta_baslik', 'İlk adımı atmaya hazır misiniz?')
+  const metin = c(content, 'iletisim_cta_metin', 'Sormak istediğiniz sorular ya da bir seans planlamak için WhatsApp üzerinden ulaşabilirsiniz. Rize, Trabzon ve online seanslar için bilgi almak her zaman mümkün.')
+  const whatsappUrl = 'https://wa.me/905343500675?text=Merhaba%2C%20bilgi%20almak%20istiyorum.'
 
   return (
     <section className="py-section-gap-mobile md:py-section-gap-desktop" id="iletisim">
       <div className="max-w-container-max mx-auto px-margin-mobile md:px-gutter">
         <div className="bg-primary rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row">
-          {/* Sol - İçerik */}
           <div className="w-full md:w-1/2 p-8 md:p-16 flex flex-col justify-center space-y-8">
-            <h2 className="font-headline text-headline-lg text-on-primary">
-              İlk adımı atmaya hazır misiniz?
-            </h2>
-            <p className="font-body text-body-md text-on-primary/80">
-              Sormak istediğiniz sorular ya da bir seans planlamak için WhatsApp üzerinden
-              ulaşabilirsiniz. Rize, Trabzon ve online seanslar için bilgi almak her zaman mümkün.
-            </p>
+            <h2 className="font-headline text-headline-lg text-on-primary">{baslik}</h2>
+            <p className="font-body text-body-md text-on-primary/80">{metin}</p>
             <div className="space-y-3">
               <a
                 href={whatsappUrl}
@@ -32,15 +34,11 @@ export default function ContactSection() {
               </p>
             </div>
           </div>
-
-          {/* Sag - Dekor */}
           <div className="w-full md:w-1/2 bg-primary-container/30 h-64 md:h-auto flex items-center justify-center">
             <div className="text-center text-on-primary/20 p-8">
               <span className="material-symbols-outlined text-9xl block mb-4">spa</span>
               <p className="font-headline text-headline-md text-on-primary/40">Öznur Yomralı</p>
-              <p className="font-body text-body-md text-on-primary/30 mt-2">
-                Psikolojik Danışman
-              </p>
+              <p className="font-body text-body-md text-on-primary/30 mt-2">Psikolojik Danışman</p>
             </div>
           </div>
         </div>

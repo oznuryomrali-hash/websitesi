@@ -4,6 +4,7 @@ export interface MenuItem {
   href: string
   order: number
   is_active: boolean
+  parent_id?: string | null
   created_at: string
 }
 

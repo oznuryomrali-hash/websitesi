@@ -1,6 +1,15 @@
 import Link from 'next/link'
+import type { SiteContent } from '@/lib/content'
+import { c } from '@/lib/content'
 
-export default function Hero() {
+interface Props {
+  content?: SiteContent
+}
+
+export default function Hero({ content = {} }: Props) {
+  const title = c(content, 'hero_baslik', 'Kendinizi ve ilişkilerinizi daha iyi anlamanın tam zamanı.')
+  const subtitle = c(content, 'hero_alt_metin', 'Merhaba, ben Öznur Yomralı. Bireylerin ve çiftlerin iç dünyalarını keşfetmelerine, tekrar eden örüntüleri fark etmelerine ve daha derin bir özgürlük kazanmalarına destek oluyorum.')
+
   return (
     <header className="relative pt-32 pb-20 md:pt-48 md:pb-section-gap-desktop overflow-hidden">
       <div className="absolute inset-0 tonal-layer z-0" />
@@ -10,12 +19,10 @@ export default function Hero() {
             Psikolojik Danışman
           </span>
           <h1 className="font-display text-4xl md:text-display-lg text-primary tracking-tight leading-tight">
-            Kendinizi ve ilişkilerinizi daha iyi anlamanın tam zamanı.
+            {title}
           </h1>
           <p className="font-body text-body-lg text-on-surface-variant max-w-2xl mx-auto">
-            Merhaba, ben Öznur Yomralı. Bireylerin ve çiftlerin iç dünyalarını keşfetmelerine,
-            tekrar eden örüntüleri fark etmelerine ve daha derin bir özgürlük kazanmalarına destek
-            oluyorum.
+            {subtitle}
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4 pt-4">
             <a

@@ -1,10 +1,10 @@
 import NavbarClient from './NavbarClient'
 
 const defaultNavItems = [
-  { id: '1', label: 'Hakkımda', href: '/hakkimda' },
-  { id: '2', label: 'Hizmetler', href: '/hizmetler' },
-  { id: '3', label: 'Blog', href: '/blog' },
-  { id: '4', label: 'İletişim', href: '/iletisim' },
+  { id: '1', label: 'Hakkımda', href: '/hakkimda', parent_id: null },
+  { id: '2', label: 'Hizmetler', href: '/hizmetler', parent_id: null },
+  { id: '3', label: 'Blog', href: '/blog', parent_id: null },
+  { id: '4', label: 'İletişim', href: '/iletisim', parent_id: null },
 ]
 
 export default async function Navbar() {
@@ -16,7 +16,7 @@ export default async function Navbar() {
       const supabase = await createClient()
       const { data } = await supabase
         .from('menu_items')
-        .select('id, label, href, order')
+        .select('id, label, href, order, parent_id')
         .eq('is_active', true)
         .order('order')
 
@@ -25,7 +25,7 @@ export default async function Navbar() {
       }
     }
   } catch {
-    // Supabase yapılandırılmamış; varsayılan öğeler kullanılır
+    // Varsayılan öğeler kullanılır
   }
 
   return <NavbarClient navItems={navItems} />

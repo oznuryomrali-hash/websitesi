@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase'
 
 const navItems = [
   { label: 'Özet', href: '/admin/dashboard', icon: 'dashboard' },
+  { label: 'İçerik', href: '/admin/icerik', icon: 'edit_note' },
   { label: 'Blog', href: '/admin/blog', icon: 'article' },
   { label: 'Danışanlar', href: '/admin/danisanlar', icon: 'group' },
   { label: 'Randevular', href: '/admin/randevular', icon: 'calendar_month' },
