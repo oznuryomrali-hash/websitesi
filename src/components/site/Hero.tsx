@@ -10,7 +10,7 @@ export default function Hero() {
             Psikolojik Danışman
           </span>
           <h1 className="font-display text-4xl md:text-display-lg text-primary tracking-tight leading-tight">
-            Kendinizi ve ilişkilerinizi daha iyi anlamanın zamanı.
+            Kendinizi ve ilişkilerinizi daha iyi anlamanın tam zamanı.
           </h1>
           <p className="font-body text-body-lg text-on-surface-variant max-w-2xl mx-auto">
             Merhaba, ben Öznur Yomralı. Bireylerin ve çiftlerin iç dünyalarını keşfetmelerine,
