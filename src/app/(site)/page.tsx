@@ -8,7 +8,7 @@ import BlogSlider from '@/components/site/BlogSlider'
 import ContactSection from '@/components/site/ContactSection'
 import JsonLd from '@/components/seo/JsonLd'
 import { getSiteContent } from '@/lib/content'
-import type { Post } from '@/lib/types'
+import { getAllPosts } from '@/lib/posts'
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://oznuryomrali.com'
 
@@ -41,29 +41,13 @@ const schema = {
   ],
 }
 
-async function getBlogPosts(): Promise<Post[]> {
-  try {
-    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) return []
-    const { createClient } = await import('@/lib/supabase-server')
-    const supabase = await createClient()
-    const { data } = await supabase
-      .from('posts')
-      .select('*')
-      .eq('published', true)
-      .order('created_at', { ascending: false })
-      .limit(8)
-    return data || []
-  } catch {
-    return []
-  }
-}
-
 export const metadata: Metadata = {
   alternates: { canonical: '/' },
 }
 
 export default async function HomePage() {
-  const [content, posts] = await Promise.all([getSiteContent(), getBlogPosts()])
+  const content = await getSiteContent()
+  const posts = getAllPosts().slice(0, 8)
 
   return (
     <>

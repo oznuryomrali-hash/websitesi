@@ -13,25 +13,9 @@ const staticPages = [
   { url: '/iletisim', priority: 0.7, changeFrequency: 'yearly' as const },
 ]
 
-async function getBlogSlugs(): Promise<string[]> {
-  try {
-    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-      return []
-    }
-    const { createClient } = await import('@/lib/supabase-server')
-    const supabase = await createClient()
-    const { data } = await supabase
-      .from('posts')
-      .select('slug, updated_at')
-      .eq('published', true)
-    return data?.map((p: { slug: string }) => p.slug) || []
-  } catch {
-    return []
-  }
-}
-
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const slugs = await getBlogSlugs()
+  const { getAllPosts } = await import('@/lib/posts')
+  const slugs = getAllPosts().map((p) => p.slug)
 
   const blogPages = slugs.map((slug) => ({
     url: `${siteUrl}/blog/${slug}`,
