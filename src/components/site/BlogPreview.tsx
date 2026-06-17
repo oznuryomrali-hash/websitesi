@@ -8,7 +8,7 @@ async function getLatestPosts(): Promise<Post[]> {
       return []
     }
     const { createClient } = await import('@/lib/supabase-server')
-    const supabase = createClient()
+    const supabase = await createClient()
     const { data } = await supabase
       .from('posts')
       .select('id, title, slug, excerpt, cover_image, created_at, published, content, updated_at')

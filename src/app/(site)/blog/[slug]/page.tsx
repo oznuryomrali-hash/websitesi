@@ -13,7 +13,7 @@ async function getPost(slug: string): Promise<Post | null> {
       return null
     }
     const { createClient } = await import('@/lib/supabase-server')
-    const supabase = createClient()
+    const supabase = await createClient()
     const { data } = await supabase
       .from('posts')
       .select('*')

@@ -16,7 +16,7 @@ async function getPosts(): Promise<Post[]> {
       return []
     }
     const { createClient } = await import('@/lib/supabase-server')
-    const supabase = createClient()
+    const supabase = await createClient()
     const { data } = await supabase
       .from('posts')
       .select('*')

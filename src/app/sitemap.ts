@@ -19,7 +19,7 @@ async function getBlogSlugs(): Promise<string[]> {
       return []
     }
     const { createClient } = await import('@/lib/supabase-server')
-    const supabase = createClient()
+    const supabase = await createClient()
     const { data } = await supabase
       .from('posts')
       .select('slug, updated_at')
