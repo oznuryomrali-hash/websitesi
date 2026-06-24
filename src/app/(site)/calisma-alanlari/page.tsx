@@ -3,156 +3,202 @@ import Link from 'next/link'
 import ContactSection from '@/components/site/ContactSection'
 
 export const metadata: Metadata = {
-  title: 'Çalışma Alanları',
+  title: 'Çalışma Alanlarım',
   description:
-    'Psikolojik Danışman Öznur Yomralı çalışma alanları: Kadın ruh sağlığı, ilişkiler ve çift terapisi, psikosomatik zorluklar, derinlemesine temalar.',
+    'Psikolojik Danışman Öznur Yomralı çalışma alanları: Bireysel terapi, çift terapisi, kadın ruh sağlığı, ilişkiler, psikosomatik zorluklar ve daha fazlası.',
   alternates: { canonical: '/calisma-alanlari' },
 }
+
+const services = [
+  {
+    icon: 'person',
+    title: 'Bireysel Terapi',
+    description:
+      'Kendinizle daha derin bir bağ kurmak, tekrar eden döngüleri anlamak ve daha özgür bir yaşam için birebir destek.',
+    tags: ['Yetişkin', 'Ergen'],
+    href: '/calisma-alanlari/bireysel-terapi',
+    color: 'bg-primary/10 text-primary',
+    accent: 'bg-primary',
+  },
+  {
+    icon: 'favorite',
+    title: 'Çift Terapisi',
+    description:
+      'İlişkideki güçlükleri, iletişim sorunlarını ve tekrar eden çatışma örüntülerini birlikte keşfetmek için çift terapisi.',
+    tags: ['Çiftler', 'Evli / Bekar'],
+    href: '/calisma-alanlari/cift-terapisi',
+    color: 'bg-ocean-muted/10 text-ocean-muted',
+    accent: 'bg-ocean-muted',
+  },
+  {
+    icon: 'video_call',
+    title: 'Online Terapi',
+    description:
+      'Türkiye ve dünyanın farklı ülkelerinde yaşayan Türkçe konuşan yetişkin ve çiftlerle güvenli online seans.',
+    tags: ['Türkiye', 'Yurt Dışı'],
+    href: '/online-terapi',
+    color: 'bg-secondary-container/30 text-secondary',
+    accent: 'bg-secondary',
+  },
+]
 
 const areas = [
   {
     icon: 'female',
     title: 'Kadın Ruh Sağlığı',
-    items: [
-      'Kadınlıkla ilgili içsel çatışmalar',
-      'Beden algısında bozulma',
-      'Tıbbi olarak açıklanamayan infertilite',
-      'Tıbbi olarak açıklanamayan tekrarlayan düşükler',
-      'Doğum sonrası depresyonu',
-      'Kadın kimliğinde yaşanan zorluklar (cinsellik, regl, gebelik)',
-      'Vajinismus (dinamik çalışma)',
-      'Kadınlarda cinsel isteksizlik',
-      'Kadınlarda utanç',
-      'Annelik suçluluğu',
-    ],
+    description: 'Kadın kimliği, annelik, beden algısı, cinsellik ve kadına özgü psikolojik zorluklar.',
+    preview: ['Doğum sonrası depresyonu', 'Vajinismus', 'Annelik suçluluğu', 'Cinsel isteksizlik'],
+    href: '/calisma-alanlari/kadin-ruh-sagligi',
   },
   {
-    icon: 'favorite',
+    icon: 'diversity_3',
     title: 'İlişkiler ve Çift Terapisi',
-    items: [
-      'Evlilik çatışmaları',
-      'Evlilikte yalnızlık hissi',
-      'İletişim problemleri',
-      'Güven ve bağlanma sorunları',
-      'Aldatma / Aldatılma',
-      'Boşanma',
-      'Ebeveynlikte yaşanan zorluklar',
-    ],
+    description: 'Evlilik çatışmaları, iletişim sorunları, güven ve bağlanma sorunları, aldatma, boşanma.',
+    preview: ['Evlilikte yalnızlık', 'Güven sorunları', 'Aldatma / aldatılma', 'Ebeveynlik zorlukları'],
+    href: '/calisma-alanlari/iliskiler-ve-cift',
   },
   {
     icon: 'monitor_heart',
     title: 'Psikosomatik ve Duygusal Zorluklar',
-    items: [
-      'Nedeni açıklanamayan bedensel ağrılar, belirtiler ve yakınmalar',
-      'Kronik ağrılar',
-      'Kaygı',
-      'Panik atak',
-      'Depresyon',
-      'Yas süreçleri',
-      'Kronik stres',
-    ],
+    description: 'Bedensel belirtiler, kronik ağrılar, kaygı, panik atak, depresyon ve yas.',
+    preview: ['Açıklanamayan ağrılar', 'Kaygı / panik atak', 'Depresyon', 'Kronik stres'],
+    href: '/calisma-alanlari/psikosomatik',
   },
   {
     icon: 'psychiatry',
     title: 'Derinlemesine Çalıştığım Temalar',
-    items: [
-      'Tekrarlayan ilişki örüntüleri',
-      'Değersizlik / yetersizlik duyguları',
-      'Terk edilme korkusu',
-      'Yalnız kalma korkusu',
-      'Sınır koyamama / hayır demede güçlük',
-      'Bağımlılıklar',
-      'Mükemmeliyetçilik',
-      'Onay arayışı ve suçluluk',
-      'Takıntılar',
-      'Özgüven sorunları',
-      'Kimlik ve benlik gelişimi',
-      'Görünür olma ve başarılı olma korkuları',
-      'Yoğun kaygılı varoluşsal çatışmalar',
-      'Ölüm ve yok olma korkuları',
-      'Kontrolü kaybetme korkusu',
-      'Delireceği ve kendine hakim olamayacağı düşünceleri',
-      'Belirsizliğe tahammülsüzlük',
-    ],
+    description: 'Tekrarlayan örüntüler, terk edilme korkusu, sınır koyamama, kimlik ve varoluşsal kaygılar.',
+    preview: ['Değersizlik duyguları', 'Terk edilme korkusu', 'Mükemmeliyetçilik', 'Ölüm korkusu'],
+    href: '/calisma-alanlari/derinlemesine-temalar',
   },
 ]
 
 export default function CalısmaAlanlariPage() {
   return (
     <>
+      {/* Hero */}
       <div className="pt-32 pb-16 md:pt-40 md:pb-20 bg-warm-sand/50">
         <div className="max-w-container-max mx-auto px-margin-mobile md:px-gutter">
-          <Link
-            href="/hizmetler"
-            className="inline-flex items-center gap-2 font-label text-label-md text-on-surface-variant hover:text-primary transition-colors mb-8"
-          >
-            <span className="material-symbols-outlined text-base">arrow_back</span>
-            Hizmetlere dön
-          </Link>
-          <span className="font-label text-label-md text-ocean-muted uppercase tracking-widest block">
-            Çalışmalarım
+          <span className="font-label text-label-md text-ocean-muted uppercase tracking-widest">
+            Hizmetler
           </span>
           <h1 className="font-headline text-headline-lg md:text-display-lg text-primary mt-4 mb-6">
-            Çalışma Alanları
+            Çalışma Alanlarım
           </h1>
           <p className="font-body text-body-lg text-on-surface-variant max-w-2xl">
-            Bireysel ve çift terapisinde yetişkinler, ergenler ve çiftlerle çalışıyorum. Aşağıda
-            özellikle odaklandığım konu başlıklarını bulabilirsiniz.
+            Yetişkinler, ergenler ve çiftlerle bireysel terapi ve çift terapisi alanında çalışıyorum.
+            Aşağıda sunduğum hizmetleri ve özellikle odaklandığım konu başlıklarını bulabilirsiniz.
           </p>
         </div>
       </div>
 
+      {/* Hizmetler */}
       <section className="py-section-gap-mobile md:py-section-gap-desktop">
         <div className="max-w-container-max mx-auto px-margin-mobile md:px-gutter">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {areas.map((area) => (
-              <div
-                key={area.title}
-                className="bg-surface rounded-xl p-8 border border-warm-sand soft-card-shadow"
+          <div className="mb-12">
+            <span className="font-label text-label-md text-ocean-muted uppercase tracking-widest">
+              Sunduğum Hizmetler
+            </span>
+            <h2 className="font-headline text-headline-lg text-primary mt-3">
+              Nasıl Çalışıyorum?
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {services.map((s) => (
+              <Link
+                key={s.title}
+                href={s.href}
+                className="bg-surface rounded-xl p-8 border border-warm-sand soft-card-shadow hover-card-lift group block"
               >
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center text-primary flex-shrink-0">
-                    <span className="material-symbols-outlined">{area.icon}</span>
-                  </div>
-                  <h2 className="font-headline text-headline-md text-primary">{area.title}</h2>
+                <div className={`w-12 h-12 rounded-lg flex items-center justify-center mb-6 transition-all duration-300 group-hover:scale-110 ${s.color}`}>
+                  <span className="material-symbols-outlined">{s.icon}</span>
                 </div>
-                <ul className="space-y-3">
-                  {area.items.map((item) => (
-                    <li
-                      key={item}
-                      className="flex items-start gap-3 font-body text-body-md text-on-surface-variant"
-                    >
-                      <span
-                        className="material-symbols-outlined text-ocean-muted text-base mt-0.5 flex-shrink-0"
-                        style={{ fontVariationSettings: "'FILL' 1" }}
-                      >
-                        check_circle
-                      </span>
-                      {item}
-                    </li>
+                <h3 className="font-headline text-headline-md text-primary mb-3">{s.title}</h3>
+                <p className="font-body text-body-md text-on-surface-variant mb-6">{s.description}</p>
+                <div className="flex flex-wrap gap-2 mb-6">
+                  {s.tags.map((tag) => (
+                    <span key={tag} className="px-3 py-0.5 rounded-full bg-warm-sand font-caption text-caption text-on-surface-variant">
+                      {tag}
+                    </span>
                   ))}
-                </ul>
-              </div>
+                </div>
+                <span className="font-label text-label-md text-ocean-muted flex items-center gap-1 group-hover:text-primary transition-colors">
+                  Detaylı bilgi
+                  <span className="material-symbols-outlined text-base transition-transform group-hover:translate-x-1">arrow_forward</span>
+                </span>
+              </Link>
             ))}
           </div>
+        </div>
+      </section>
 
-          <div className="mt-16 bg-ocean-muted/10 border border-ocean-muted/20 rounded-xl p-8 md:p-12 text-center">
-            <span className="material-symbols-outlined text-4xl text-ocean-muted block mb-4">
-              info
+      {/* Çalışma Alanları */}
+      <section className="py-section-gap-mobile md:py-section-gap-desktop bg-warm-sand/50">
+        <div className="max-w-container-max mx-auto px-margin-mobile md:px-gutter">
+          <div className="mb-12">
+            <span className="font-label text-label-md text-ocean-muted uppercase tracking-widest">
+              Konu Başlıkları
             </span>
-            <p className="font-body text-body-lg text-on-surface-variant max-w-2xl mx-auto">
-              Bu listede adı geçmeyen bir konu için destek almak istiyorsanız lütfen iletişime
-              geçin. Her bireyin durumu kendine özgüdür; birlikte değerlendirebiliriz.
+            <h2 className="font-headline text-headline-lg text-primary mt-3">
+              Hangi Konularda Çalışıyorum?
+            </h2>
+            <p className="font-body text-body-md text-on-surface-variant mt-4 max-w-2xl">
+              Her kategoride ayrıntılı bilgiye ulaşmak için ilgili kartı tıklayın.
             </p>
-            <a
-              href="https://wa.me/905343500675?text=Merhaba%2C%20bilgi%20almak%20istiyorum."
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-primary text-on-primary px-8 py-3 rounded-full font-label text-label-md hover:opacity-80 transition-opacity mt-8"
-            >
-              WhatsApp ile iletişime geç
-              <span className="material-symbols-outlined text-base">arrow_forward</span>
-            </a>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {areas.map((area) => (
+              <Link
+                key={area.title}
+                href={area.href}
+                className="bg-surface rounded-xl p-8 border border-warm-sand soft-card-shadow hover-card-lift group block"
+              >
+                <div className="flex items-start gap-4 mb-5">
+                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center text-primary flex-shrink-0 group-hover:bg-primary group-hover:text-on-primary transition-all duration-300">
+                    <span className="material-symbols-outlined">{area.icon}</span>
+                  </div>
+                  <div>
+                    <h3 className="font-headline text-headline-md text-primary group-hover:text-ocean-muted transition-colors">{area.title}</h3>
+                    <p className="font-body text-body-md text-on-surface-variant mt-1">{area.description}</p>
+                  </div>
+                </div>
+                <div className="flex flex-wrap gap-2 mb-5">
+                  {area.preview.map((item) => (
+                    <span key={item} className="px-3 py-0.5 rounded-full bg-warm-sand font-caption text-caption text-on-surface-variant">
+                      {item}
+                    </span>
+                  ))}
+                  <span className="px-3 py-0.5 rounded-full bg-warm-sand font-caption text-caption text-on-surface-variant">
+                    ...
+                  </span>
+                </div>
+                <span className="font-label text-label-md text-ocean-muted flex items-center gap-1 group-hover:text-primary transition-colors">
+                  Tüm konuları gör
+                  <span className="material-symbols-outlined text-base transition-transform group-hover:translate-x-1">arrow_forward</span>
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Seans bilgisi */}
+      <section className="py-12 md:py-16">
+        <div className="max-w-container-max mx-auto px-margin-mobile md:px-gutter">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              { icon: 'schedule', title: 'Seans Süresi', desc: 'Her seans yaklaşık 50 dakikadır.' },
+              { icon: 'location_on', title: 'Hizmet Şekli', desc: 'Rize ve Trabzon\'da yüz yüze, Türkiye ve yurt dışına online.' },
+              { icon: 'calendar_month', title: 'Randevu', desc: 'WhatsApp üzerinden hızla randevu oluşturabilirsiniz.' },
+            ].map((item) => (
+              <div key={item.title} className="bg-soft-mist rounded-xl p-6 border border-outline-variant flex items-start gap-4">
+                <span className="material-symbols-outlined text-3xl text-ocean-muted flex-shrink-0">{item.icon}</span>
+                <div>
+                  <h3 className="font-headline text-headline-md text-primary mb-1">{item.title}</h3>
+                  <p className="font-body text-body-md text-on-surface-variant">{item.desc}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>

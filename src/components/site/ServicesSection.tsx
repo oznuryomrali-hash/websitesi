@@ -7,7 +7,7 @@ const services = [
     description:
       'Kendinizle daha derin bir bağ kurmak, tekrar eden döngüleri anlamak ve yaşamınızda daha fazla farkındalık kazanmak için birebir destek.',
     items: ['Yetişkin ve ergenlerle çalışma', 'İlişki örüntülerine odaklı yaklaşım'],
-    href: '/hizmetler',
+    href: '/calisma-alanlari/bireysel-terapi',
   },
   {
     icon: 'favorite',
@@ -15,7 +15,7 @@ const services = [
     description:
       'İlişkide yaşanan güçlükleri, iletişim sorunlarını ve tekrar eden çatışma örüntülerini birlikte keşfetmek için çift terapisi.',
     items: ['İletişim ve sınır çalışması', 'İlişki örüntülerini anlama'],
-    href: '/hizmetler',
+    href: '/calisma-alanlari/cift-terapisi',
   },
   {
     icon: 'video_call',
@@ -34,9 +34,9 @@ export default function ServicesSection() {
         <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
           <div className="max-w-xl">
             <span className="font-label text-label-md text-ocean-muted uppercase tracking-widest">
-              Ne Sunuyorum
+              Hizmetler
             </span>
-            <h2 className="font-headline text-headline-lg text-primary mt-4">Hizmetler</h2>
+            <h2 className="font-headline text-headline-lg text-primary mt-4">Çalışma Alanlarım</h2>
             <p className="font-body text-body-md text-on-surface-variant mt-4">
               Her seans, kendinize doğru atılan bir adımdır. Size ve ilişkilerinize özel destek
               sunuyorum.

@@ -2,7 +2,7 @@ import NavbarClient from './NavbarClient'
 
 const defaultNavItems = [
   { id: '1', label: 'Hakkımda', href: '/hakkimda', parent_id: null },
-  { id: '2', label: 'Hizmetler', href: '/hizmetler', parent_id: null },
+  { id: '2', label: 'Çalışma Alanlarım', href: '/calisma-alanlari', parent_id: null },
   { id: '3', label: 'Blog', href: '/blog', parent_id: null },
   { id: '4', label: 'İletişim', href: '/iletisim', parent_id: null },
 ]
