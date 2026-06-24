@@ -5,7 +5,9 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://oznuryomrali.com'
 const staticPages = [
   { url: '/', priority: 1.0, changeFrequency: 'monthly' as const },
   { url: '/hakkimda', priority: 0.8, changeFrequency: 'monthly' as const },
+  { url: '/egitimlerim', priority: 0.7, changeFrequency: 'monthly' as const },
   { url: '/hizmetler', priority: 0.9, changeFrequency: 'monthly' as const },
+  { url: '/calisma-alanlari', priority: 0.8, changeFrequency: 'monthly' as const },
   { url: '/rize-psikolojik-danisman', priority: 0.9, changeFrequency: 'monthly' as const },
   { url: '/trabzon-psikolojik-danisman', priority: 0.9, changeFrequency: 'monthly' as const },
   { url: '/online-terapi', priority: 0.9, changeFrequency: 'monthly' as const },

@@ -5,9 +5,9 @@ import JsonLd from '@/components/seo/JsonLd'
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://oznuryomrali.com'
 
 export const metadata: Metadata = {
-  title: "Online Terapi | Türkiye Geneli Psikolojik Danışmanlık",
+  title: 'Online Terapi | Türkiye ve Yurt Dışına Psikoterapi',
   description:
-    "Türkiye'nin her yerinden online psikolojik danışmanlık. Güvenli, esnek ve profesyonel bireysel terapi ve çift terapisi seansları.",
+    "Türkiye ve dünyanın farklı ülkelerinde yaşayan Türkçe konuşanlar için online psikoterapi. Bireysel terapi ve çift terapisi seansları.",
   alternates: { canonical: '/online-terapi' },
 }
 
@@ -36,14 +36,14 @@ const faqs = [
       'Araştırmalar, online terapinin birçok alanda yüz yüze terapi kadar etkili olduğunu göstermektedir. Önemli olan danışanla kurulan güvenli ilişkidir.',
   },
   {
+    question: 'Yurt dışından seans alabilir miyim?',
+    answer:
+      "Evet. Dünyanın farklı ülkelerinde yaşayan Türkçe konuşan yetişkin ve çiftlerle online çalışıyorum. Yurt dışından da kolaylıkla seans alabilirsiniz.",
+  },
+  {
     question: 'Nelerden randevu alabilirim?',
     answer:
       'WhatsApp üzerinden iletişime geçerek uygun seans zamanını birlikte belirleyebiliriz.',
-  },
-  {
-    question: "Türkiye'nin her yerinden seans alabilir miyim?",
-    answer:
-      "Evet, Türkiye'nin herhangi bir şehrinden online seans alabilirsiniz. Yurt dışında yaşayan Türk vatandaşları için de seans imkanı mevcuttur.",
   },
 ]
 
@@ -67,13 +67,15 @@ export default function OnlineTerapiPage() {
       <div className="pt-32 pb-16 md:pt-40 md:pb-20 bg-warm-sand/50">
         <div className="max-w-container-max mx-auto px-margin-mobile md:px-gutter">
           <span className="font-label text-label-md text-ocean-muted uppercase tracking-widest">
-            Türkiye Geneli
+            Türkiye ve Yurt Dışı
           </span>
           <h1 className="font-headline text-headline-lg md:text-display-lg text-primary mt-4 mb-6">
             Online Terapi
           </h1>
           <p className="font-body text-body-lg text-on-surface-variant max-w-2xl">
-            Nerede olursanız olun, güvenli ve profesyonel bir ortamda psikolojik destek alabilirsiniz.
+            Dünyanın farklı ülkelerinde yaşayan Türkçe konuşan yetişkin ve çiftlerle online
+            çalışıyorum. Nerede olursanız olun güvenli ve profesyonel bir ortamda destek
+            alabilirsiniz.
           </p>
         </div>
       </div>
@@ -87,17 +89,17 @@ export default function OnlineTerapiPage() {
                 Online Terapinin Avantajları
               </h2>
               <p className="font-body text-body-lg text-on-surface-variant">
-                Online terapi, coğrafi engelleri ortadan kaldırarak Türkiye'nin her yerinden
-                profesyonel psikolojik destek almanıza olanak tanır. Evinizin konforunda, güvenli
-                bir ortamda terapi süreci yürütülür.
+                Online terapi, coğrafi engelleri ortadan kaldırarak Türkiye'nin her yerinden ve
+                yurt dışından profesyonel psikolojik destek almanıza olanak tanır. Evinizin
+                konforunda, güvenli bir ortamda terapi süreci yürütülür.
               </p>
               <div className="space-y-4">
                 {[
                   'Zaman ve mekan esnekliği',
                   "Türkiye'nin her yerinden erişim",
+                  'Yurt dışında yaşayan Türkçe konuşanlar için',
                   'Güvenli ve gizli platform',
                   'Yüz yüze terapi kadar etkili',
-                  'Şehir dışında yaşayanlar için ideal',
                 ].map((item) => (
                   <div key={item} className="flex items-center gap-3">
                     <span

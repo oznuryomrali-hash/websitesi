@@ -6,7 +6,7 @@ const services = [
     title: 'Bireysel Terapi',
     description:
       'Kendinizle daha derin bir bağ kurmak, tekrar eden döngüleri anlamak ve yaşamınızda daha fazla farkındalık kazanmak için birebir destek.',
-    items: ['Yetişkinlerle çalışma', 'Aktarım odaklı yaklaşım'],
+    items: ['Yetişkin ve ergenlerle çalışma', 'İlişki örüntülerine odaklı yaklaşım'],
     href: '/hizmetler',
   },
   {
@@ -21,8 +21,8 @@ const services = [
     icon: 'video_call',
     title: 'Online Terapi',
     description:
-      "Rize ve Trabzon dışında yaşayanlar veya yüz yüze gelemeyenler için tüm Türkiye'ye yönelik online danışmanlık hizmeti.",
-    items: ["Tüm Türkiye'ye hizmet", 'Güvenli ve esnek seans ortamı'],
+      'Türkiye ve dünyanın farklı ülkelerinde yaşayan Türkçe konuşan yetişkin ve çiftlerle güvenli online seans imkanı.',
+    items: ['Türkiye ve yurt dışına hizmet', 'Güvenli ve esnek seans ortamı'],
     href: '/online-terapi',
   },
 ]
@@ -43,15 +43,14 @@ export default function ServicesSection() {
             </p>
           </div>
           <div className="flex gap-2 flex-wrap">
-            <span className="px-4 py-1 rounded-full bg-secondary-container/30 text-secondary font-label text-label-md">
-              Bireysel
-            </span>
-            <span className="px-4 py-1 rounded-full bg-secondary-container/30 text-secondary font-label text-label-md">
-              Çift
-            </span>
-            <span className="px-4 py-1 rounded-full bg-secondary-container/30 text-secondary font-label text-label-md">
-              Online
-            </span>
+            {['Yetişkin', 'Çocuk / Ergen', 'Çift', 'Online'].map((tag) => (
+              <span
+                key={tag}
+                className="px-4 py-1 rounded-full bg-secondary-container/30 text-secondary font-label text-label-md"
+              >
+                {tag}
+              </span>
+            ))}
           </div>
         </div>
 
@@ -87,6 +86,16 @@ export default function ServicesSection() {
               </ul>
             </Link>
           ))}
+        </div>
+
+        <div className="mt-10 text-center">
+          <Link
+            href="/calisma-alanlari"
+            className="inline-flex items-center gap-2 border border-primary text-primary px-8 py-3 rounded-full font-label text-label-md hover:bg-primary hover:text-on-primary transition-all duration-300"
+          >
+            Tüm çalışma alanlarını gör
+            <span className="material-symbols-outlined text-base">arrow_forward</span>
+          </Link>
         </div>
       </div>
     </section>

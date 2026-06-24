@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import ContactSection from '@/components/site/ContactSection'
 
 export const metadata: Metadata = {
@@ -108,6 +109,30 @@ export default function HizmetlerPage() {
               </div>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* Çalışma Alanları CTA */}
+      <section className="py-12 bg-warm-sand/50">
+        <div className="max-w-container-max mx-auto px-margin-mobile md:px-gutter">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6 bg-surface rounded-xl p-8 border border-warm-sand soft-card-shadow">
+            <div>
+              <h2 className="font-headline text-headline-md text-primary mb-2">
+                Hangi konularda çalışıyorum?
+              </h2>
+              <p className="font-body text-body-md text-on-surface-variant">
+                Bireysel terapi ve çift terapisinde özellikle odaklandığım alanların tümünü
+                görüntüleyin.
+              </p>
+            </div>
+            <Link
+              href="/calisma-alanlari"
+              className="flex-shrink-0 inline-flex items-center gap-2 bg-primary text-on-primary px-8 py-3 rounded-full font-label text-label-md hover:opacity-80 transition-opacity"
+            >
+              Çalışma Alanları
+              <span className="material-symbols-outlined text-base">arrow_forward</span>
+            </Link>
+          </div>
         </div>
       </section>
 

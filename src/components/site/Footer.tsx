@@ -3,14 +3,15 @@ import Link from 'next/link'
 const quickLinks = [
   { label: 'Hakkımda', href: '/hakkimda' },
   { label: 'Hizmetler', href: '/hizmetler' },
+  { label: 'Çalışma Alanları', href: '/calisma-alanlari' },
   { label: 'Blog', href: '/blog' },
   { label: 'İletişim', href: '/iletisim' },
 ]
 
 const locationLinks = [
-  { label: 'Rize Psikolojik Danışman', href: '/rize-psikolojik-danisman' },
-  { label: 'Trabzon Psikolojik Danışman', href: '/trabzon-psikolojik-danisman' },
-  { label: 'Online Terapi', href: '/online-terapi' },
+  { label: 'Rize - Yüz Yüze Terapi', href: '/rize-psikolojik-danisman' },
+  { label: 'Trabzon - Yüz Yüze Terapi', href: '/trabzon-psikolojik-danisman' },
+  { label: 'Türkiye ve Yurt Dışı - Online Terapi', href: '/online-terapi' },
 ]
 
 export default function Footer() {
@@ -20,10 +21,11 @@ export default function Footer() {
         <div className="space-y-4">
           <div className="font-headline text-headline-md text-primary">Öznur Yomralı</div>
           <p className="font-body text-body-md text-on-secondary-container">
-            Yetişkinler ve çiftlerle çalışan Psikolojik Danışman. Rize, Trabzon ve online terapi hizmetleri.
+            Yetişkinler ve çiftlerle çalışan psikoterapist. Rize, Trabzon ve Türkiye ile yurt
+            dışına online terapi hizmetleri.
           </p>
           <p className="font-caption text-caption text-on-surface-variant">
-            Psikolojik Danışman (PDR)
+            Psikolojik Danışman | Klinik Psikoloji Yüksek Lisans
           </p>
         </div>
 
