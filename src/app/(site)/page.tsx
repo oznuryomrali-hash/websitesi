@@ -1,8 +1,6 @@
 import type { Metadata } from 'next'
 import Hero from '@/components/site/Hero'
 import AboutSection from '@/components/site/AboutSection'
-import ServicesSection from '@/components/site/ServicesSection'
-import LocationsSection from '@/components/site/LocationsSection'
 import QuoteSection from '@/components/site/QuoteSection'
 import BlogSlider from '@/components/site/BlogSlider'
 import ContactSection from '@/components/site/ContactSection'
@@ -47,15 +45,13 @@ export const metadata: Metadata = {
 
 export default async function HomePage() {
   const content = await getSiteContent()
-  const posts = getAllPosts().slice(0, 8)
+  const posts = getAllPosts()
 
   return (
     <>
       <JsonLd data={schema} />
       <Hero content={content} />
       <AboutSection content={content} />
-      <ServicesSection />
-      <LocationsSection />
       <QuoteSection />
       <BlogSlider posts={posts} />
       <ContactSection content={content} />

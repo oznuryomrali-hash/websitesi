@@ -16,43 +16,89 @@ interface Props {
   navItems: NavItem[]
 }
 
+function useHashScroll() {
+  const pathname = usePathname()
+
+  function handleClick(e: React.MouseEvent<HTMLAnchorElement>, href: string) {
+    if (!href.startsWith('/#')) return
+    const id = href.slice(2)
+    if (pathname === '/') {
+      e.preventDefault()
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+    }
+  }
+
+  return { handleClick }
+}
+
+function NavLink({
+  item,
+  onClose,
+  className,
+}: {
+  item: NavItem
+  onClose: () => void
+  className: string
+}) {
+  const { handleClick } = useHashScroll()
+  return (
+    <Link
+      href={item.href}
+      onClick={(e) => { handleClick(e, item.href); onClose() }}
+      className={className}
+    >
+      {item.label}
+    </Link>
+  )
+}
+
 function DropdownItem({ item, onClose }: { item: NavItem; onClose: () => void }) {
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
   const pathname = usePathname()
+  const { handleClick } = useHashScroll()
   const hasChildren = item.children && item.children.length > 0
 
   useEffect(() => {
-    function handleClick(e: MouseEvent) {
+    function handleOutside(e: MouseEvent) {
       if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false)
     }
-    document.addEventListener('mousedown', handleClick)
-    return () => document.removeEventListener('mousedown', handleClick)
+    document.addEventListener('mousedown', handleOutside)
+    return () => document.removeEventListener('mousedown', handleOutside)
   }, [])
+
+  useEffect(() => { setOpen(false) }, [pathname])
 
   if (!hasChildren) {
     return (
-      <Link
-        href={item.href}
-        onClick={onClose}
+      <NavLink
+        item={item}
+        onClose={onClose}
         className={`font-label text-label-md transition-colors ${
           pathname === item.href ? 'text-primary' : 'text-on-surface-variant hover:text-primary'
+        }`}
+      />
+    )
+  }
+
+  const isActive = pathname.startsWith(item.href) && item.href !== '/'
+
+  return (
+    <div ref={ref} className="relative flex items-center gap-0.5">
+      <Link
+        href={item.href}
+        onClick={(e) => { handleClick(e, item.href); onClose() }}
+        className={`font-label text-label-md transition-colors ${
+          isActive ? 'text-primary' : 'text-on-surface-variant hover:text-primary'
         }`}
       >
         {item.label}
       </Link>
-    )
-  }
-
-  return (
-    <div ref={ref} className="relative">
       <button
         onClick={() => setOpen(!open)}
-        className={`flex items-center gap-1 font-label text-label-md transition-colors ${
-          open ? 'text-primary' : 'text-on-surface-variant hover:text-primary'
-        }`}
+        aria-label="Alt menüyü aç"
+        className="text-on-surface-variant hover:text-primary transition-colors"
       >
-        {item.label}
         <span
           className={`material-symbols-outlined text-base transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
         >
@@ -62,8 +108,10 @@ function DropdownItem({ item, onClose }: { item: NavItem; onClose: () => void })
 
       {/* Desktop dropdown */}
       <div
-        className={`absolute top-full left-0 mt-2 w-52 bg-surface rounded-xl shadow-lg border border-outline-variant overflow-hidden transition-all duration-200 z-50 ${
-          open ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-2 pointer-events-none'
+        className={`absolute top-full left-0 mt-3 w-56 bg-surface rounded-xl shadow-lg border border-outline-variant overflow-hidden transition-all duration-200 z-50 ${
+          open
+            ? 'opacity-100 translate-y-0 pointer-events-auto'
+            : 'opacity-0 -translate-y-2 pointer-events-none'
         }`}
       >
         {item.children!.map((child) => (
@@ -71,7 +119,7 @@ function DropdownItem({ item, onClose }: { item: NavItem; onClose: () => void })
             key={child.id}
             href={child.href}
             onClick={() => { setOpen(false); onClose() }}
-            className="block px-4 py-3 font-label text-label-md text-on-surface-variant hover:bg-primary/5 hover:text-primary transition-colors border-b border-outline-variant/30 last:border-0"
+            className="flex items-center gap-2 px-4 py-3 font-label text-label-md text-on-surface-variant hover:bg-primary/5 hover:text-primary transition-colors border-b border-outline-variant/30 last:border-0"
           >
             {child.label}
           </Link>
@@ -86,6 +134,7 @@ export default function NavbarClient({ navItems }: Props) {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [mobileDropdowns, setMobileDropdowns] = useState<Record<string, boolean>>({})
   const pathname = usePathname()
+  const { handleClick } = useHashScroll()
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50)
@@ -160,17 +209,25 @@ export default function NavbarClient({ navItems }: Props) {
                 <div key={item.id}>
                   {hasChildren ? (
                     <>
-                      <button
-                        onClick={() => toggleMobileDropdown(item.id)}
-                        className="w-full flex items-center justify-between font-label text-label-md py-3 px-4 rounded-lg text-on-surface-variant hover:text-primary hover:bg-primary/5 transition-colors"
-                      >
-                        {item.label}
-                        <span
-                          className={`material-symbols-outlined text-base transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+                      <div className="flex items-center">
+                        <Link
+                          href={item.href}
+                          onClick={(e) => { handleClick(e, item.href); setMobileOpen(false) }}
+                          className="flex-1 font-label text-label-md py-3 px-4 rounded-lg text-on-surface-variant hover:text-primary hover:bg-primary/5 transition-colors"
                         >
-                          expand_more
-                        </span>
-                      </button>
+                          {item.label}
+                        </Link>
+                        <button
+                          onClick={() => toggleMobileDropdown(item.id)}
+                          className="p-3 text-on-surface-variant hover:text-primary transition-colors"
+                        >
+                          <span
+                            className={`material-symbols-outlined text-base transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+                          >
+                            expand_more
+                          </span>
+                        </button>
+                      </div>
                       {isOpen && (
                         <div className="ml-4 mt-1 space-y-1 border-l-2 border-primary/20 pl-4">
                           {item.children!.map((child) => (
@@ -189,12 +246,12 @@ export default function NavbarClient({ navItems }: Props) {
                   ) : (
                     <Link
                       href={item.href}
+                      onClick={(e) => { handleClick(e, item.href); setMobileOpen(false) }}
                       className={`block font-label text-label-md py-3 px-4 rounded-lg transition-colors ${
                         pathname === item.href
                           ? 'text-primary bg-primary/5'
                           : 'text-on-surface-variant hover:text-primary hover:bg-primary/5'
                       }`}
-                      onClick={() => setMobileOpen(false)}
                     >
                       {item.label}
                     </Link>
