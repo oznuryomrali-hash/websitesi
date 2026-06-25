@@ -1,0 +1,11 @@
+
+> oznur-yomrali-website@0.1.0 dev
+> next dev
+
+▲ Next.js 16.2.9 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.1.102:3000
+- Environments: .env.local
+✓ Ready in 528ms
+
+ GET /admin/blog 200 in 349ms (next.js: 156ms, application-code: 193ms)

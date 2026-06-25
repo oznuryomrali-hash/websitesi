@@ -31,6 +31,7 @@ export default function AdminBlogPage() {
   const [form, setForm] = useState(emptyForm)
   const [saving, setSaving] = useState(false)
   const [uploading, setUploading] = useState(false)
+  const [uploadError, setUploadError] = useState('')
   const supabase = createClient()
 
   async function fetchPosts() {
@@ -83,17 +84,35 @@ export default function AdminBlogPage() {
     fetchPosts()
   }
 
-  async function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
+  async function uploadToStorage(file: File): Promise<string> {
+    const ext = file.name.split('.').pop()
+    const filePath = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
+    const { error } = await supabase.storage
+      .from('blog-images')
+      .upload(filePath, file, { cacheControl: '3600', upsert: false })
+    if (error) throw new Error(error.message)
+    const { data: pub } = supabase.storage.from('blog-images').getPublicUrl(filePath)
+    return pub.publicUrl
+  }
+
+  async function handleCoverImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
     if (!file) return
     setUploading(true)
-    const filePath = `${Date.now()}-${file.name}`
-    const { error } = await supabase.storage.from('blog-images').upload(filePath, file, { cacheControl: '3600', upsert: false })
-    if (!error) {
-      const { data: pub } = supabase.storage.from('blog-images').getPublicUrl(filePath)
-      setForm((f) => ({ ...f, cover_image: pub.publicUrl }))
+    setUploadError('')
+    try {
+      const url = await uploadToStorage(file)
+      setForm((f) => ({ ...f, cover_image: url }))
+    } catch (err) {
+      setUploadError(
+        err instanceof Error
+          ? `Yükleme hatası: ${err.message}`
+          : 'Görsel yüklenemedi. Supabase Storage ayarlarını kontrol edin.',
+      )
+    } finally {
+      setUploading(false)
+      e.target.value = ''
     }
-    setUploading(false)
   }
 
   const inputClass = 'w-full px-4 py-3 rounded-lg border border-outline-variant bg-surface focus:outline-none focus:ring-2 focus:ring-primary font-body text-body-md'
@@ -125,16 +144,45 @@ export default function AdminBlogPage() {
           </div>
           <div>
             <label className="block font-label text-label-md text-on-surface-variant mb-2">Kapak Görseli</label>
-            <input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" id="cover-upload" />
-            <label htmlFor="cover-upload" className="inline-flex items-center gap-2 px-4 py-2 border border-outline-variant rounded-lg cursor-pointer hover:bg-surface-container transition-colors font-label text-label-md text-on-surface-variant">
-              <span className="material-symbols-outlined text-base">upload</span>
-              {uploading ? 'Yükleniyor...' : 'Görsel Seç'}
-            </label>
-            {form.cover_image && <p className="mt-2 font-caption text-caption text-ocean-muted truncate">{form.cover_image}</p>}
+            <div className="space-y-3">
+              <div className="flex items-center gap-3">
+                <input type="file" accept="image/*" onChange={handleCoverImageUpload} className="hidden" id="cover-upload" disabled={uploading} />
+                <label htmlFor="cover-upload" className={`inline-flex items-center gap-2 px-4 py-2 border border-outline-variant rounded-lg cursor-pointer transition-colors font-label text-label-md ${uploading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-surface-container text-on-surface-variant'}`}>
+                  <span className="material-symbols-outlined text-base">{uploading ? 'hourglass_empty' : 'upload'}</span>
+                  {uploading ? 'Yükleniyor...' : 'Görsel Seç'}
+                </label>
+                {form.cover_image && (
+                  <button
+                    type="button"
+                    onClick={() => setForm((f) => ({ ...f, cover_image: '' }))}
+                    className="inline-flex items-center gap-1 px-3 py-2 text-error border border-error/30 rounded-lg hover:bg-error/5 transition-colors font-label text-label-sm"
+                  >
+                    <span className="material-symbols-outlined text-base">close</span>
+                    Kaldır
+                  </button>
+                )}
+              </div>
+              {uploadError && (
+                <div className="flex items-start gap-2 p-3 bg-error/5 border border-error/20 rounded-lg">
+                  <span className="material-symbols-outlined text-error text-base flex-shrink-0 mt-0.5">error</span>
+                  <p className="font-caption text-caption text-error">{uploadError}</p>
+                </div>
+              )}
+              {form.cover_image && (
+                <div className="relative w-full max-w-sm aspect-video rounded-lg overflow-hidden border border-outline-variant bg-surface-container">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={form.cover_image} alt="Kapak görseli önizleme" className="w-full h-full object-cover" />
+                </div>
+              )}
+            </div>
           </div>
           <div>
             <label className="block font-label text-label-md text-on-surface-variant mb-2">İçerik</label>
-            <RichTextEditor content={form.content} onChange={(html) => setForm((f) => ({ ...f, content: html }))} />
+            <RichTextEditor
+              content={form.content}
+              onChange={(html) => setForm((f) => ({ ...f, content: html }))}
+              onImageUpload={uploadToStorage}
+            />
           </div>
         </div>
 
