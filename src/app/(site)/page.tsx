@@ -6,7 +6,7 @@ import BlogSlider from '@/components/site/BlogSlider'
 import ContactSection from '@/components/site/ContactSection'
 import JsonLd from '@/components/seo/JsonLd'
 import { getSiteContent } from '@/lib/content'
-import { getAllPosts } from '@/lib/posts'
+import { getPublishedPosts } from '@/lib/blog'
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://oznuryomrali.com'
 
@@ -47,7 +47,7 @@ const defaultSectionOrder = ['hero', 'hakkimda', 'quote', 'blog', 'iletisim']
 
 export default async function HomePage() {
   const content = await getSiteContent()
-  const posts = getAllPosts()
+  const posts = await getPublishedPosts()
 
   let sectionOrder = defaultSectionOrder
 

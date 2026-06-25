@@ -2,33 +2,33 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
-import { getPostBySlug, getAllPosts } from '@/lib/posts'
+import { getPostBySlug } from '@/lib/blog'
 import JsonLd from '@/components/seo/JsonLd'
+
+export const dynamic = 'force-dynamic'
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://oznuryomrali.com'
 
-export async function generateStaticParams() {
-  return getAllPosts().map((post) => ({ slug: post.slug }))
-}
-
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const post = getPostBySlug(params.slug)
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params
+  const post = await getPostBySlug(slug)
   if (!post) return {}
   return {
     title: post.title,
-    description: post.excerpt,
+    description: post.excerpt || undefined,
     alternates: { canonical: `/blog/${post.slug}` },
     openGraph: {
       type: 'article',
       title: post.title,
-      description: post.excerpt,
+      description: post.excerpt || undefined,
       images: post.cover_image ? [post.cover_image] : undefined,
     },
   }
 }
 
-export default function BlogPostPage({ params }: { params: { slug: string } }) {
-  const post = getPostBySlug(params.slug)
+export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
+  const post = await getPostBySlug(slug)
   if (!post) notFound()
 
   const schema = {
@@ -36,7 +36,8 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
     '@type': 'BlogPosting',
     headline: post.title,
     description: post.excerpt,
-    datePublished: post.date,
+    datePublished: post.created_at,
+    dateModified: post.updated_at,
     author: { '@type': 'Person', name: 'Öznur Yomralı', jobTitle: 'Psikolojik Danışman' },
     image: post.cover_image,
     url: `${siteUrl}/blog/${post.slug}`,
@@ -48,7 +49,10 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
 
       <div className="pt-28 pb-4 md:pt-36">
         <div className="max-w-container-max mx-auto px-margin-mobile md:px-gutter">
-          <Link href="/blog" className="inline-flex items-center gap-2 font-label text-label-md text-on-surface-variant hover:text-primary transition-colors">
+          <Link
+            href="/blog"
+            className="inline-flex items-center gap-2 font-label text-label-md text-on-surface-variant hover:text-primary transition-colors"
+          >
             <span className="material-symbols-outlined text-base">arrow_back</span>
             Blog'a dön
           </Link>
@@ -60,19 +64,34 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
           <div className="max-w-3xl mx-auto">
             <header className="mb-12">
               <p className="font-caption text-caption text-on-surface-variant mb-4">
-                {new Date(post.date).toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' })} - Öznur Yomralı
+                {new Date(post.created_at).toLocaleDateString('tr-TR', {
+                  day: 'numeric', month: 'long', year: 'numeric',
+                })} - Öznur Yomralı
               </p>
-              <h1 className="font-headline text-headline-lg md:text-display-lg text-primary mb-6">{post.title}</h1>
-              {post.excerpt && <p className="font-body text-body-lg text-on-surface-variant">{post.excerpt}</p>}
+              <h1 className="font-headline text-headline-lg md:text-display-lg text-primary mb-6">
+                {post.title}
+              </h1>
+              {post.excerpt && (
+                <p className="font-body text-body-lg text-on-surface-variant">{post.excerpt}</p>
+              )}
             </header>
 
             {post.cover_image && (
               <div className="relative h-64 md:h-96 rounded-xl overflow-hidden mb-12">
-                <Image src={post.cover_image} alt={post.title} fill className="object-cover" priority />
+                <Image
+                  src={post.cover_image}
+                  alt={post.title}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 800px"
+                  className="object-cover"
+                  priority
+                />
               </div>
             )}
 
-            <div className="tiptap-content" dangerouslySetInnerHTML={{ __html: post.content }} />
+            {post.content && (
+              <div className="tiptap-content" dangerouslySetInnerHTML={{ __html: post.content }} />
+            )}
 
             <footer className="mt-16 pt-8 border-t border-outline-variant">
               <div className="flex items-center gap-4">

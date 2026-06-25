@@ -2,10 +2,16 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import type { FilePost } from '@/lib/posts'
+interface PostCard {
+  slug: string
+  title: string
+  excerpt: string | null
+  cover_image: string | null
+  created_at: string
+}
 
 interface Props {
-  posts: FilePost[]
+  posts: PostCard[]
 }
 
 export default function BlogSlider({ posts }: Props) {
@@ -59,7 +65,7 @@ export default function BlogSlider({ posts }: Props) {
               )}
               <div className="p-5">
                 <p className="font-caption text-caption text-on-surface-variant mb-2">
-                  {new Date(post.date || post.created_at).toLocaleDateString('tr-TR', {
+                  {new Date(post.created_at).toLocaleDateString('tr-TR', {
                     day: 'numeric', month: 'long', year: 'numeric',
                   })}
                 </p>
