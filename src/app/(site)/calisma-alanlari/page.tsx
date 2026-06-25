@@ -18,7 +18,6 @@ const services = [
     tags: ['Yetişkin', 'Ergen'],
     href: '/calisma-alanlari/bireysel-terapi',
     color: 'bg-primary/10 text-primary',
-    accent: 'bg-primary',
   },
   {
     icon: 'favorite',
@@ -28,7 +27,6 @@ const services = [
     tags: ['Çiftler', 'Evli / Bekar'],
     href: '/calisma-alanlari/cift-terapisi',
     color: 'bg-ocean-muted/10 text-ocean-muted',
-    accent: 'bg-ocean-muted',
   },
   {
     icon: 'video_call',
@@ -38,42 +36,62 @@ const services = [
     tags: ['Türkiye', 'Yurt Dışı'],
     href: '/online-terapi',
     color: 'bg-secondary-container/30 text-secondary',
-    accent: 'bg-secondary',
   },
 ]
 
-const areas = [
+// Supabase bağlantı yoksa gösterilecek varsayılan kategoriler
+const fallbackAreas = [
   {
+    id: 'f1',
     icon: 'female',
     title: 'Kadın Ruh Sağlığı',
     description: 'Kadın kimliği, annelik, beden algısı, cinsellik ve kadına özgü psikolojik zorluklar.',
-    preview: ['Doğum sonrası depresyonu', 'Vajinismus', 'Annelik suçluluğu', 'Cinsel isteksizlik'],
-    href: '/calisma-alanlari/kadin-ruh-sagligi',
+    slug: 'kadin-ruh-sagligi',
   },
   {
+    id: 'f2',
     icon: 'diversity_3',
     title: 'İlişkiler ve Çift Terapisi',
     description: 'Evlilik çatışmaları, iletişim sorunları, güven ve bağlanma sorunları, aldatma, boşanma.',
-    preview: ['Evlilikte yalnızlık', 'Güven sorunları', 'Aldatma / aldatılma', 'Ebeveynlik zorlukları'],
-    href: '/calisma-alanlari/iliskiler-ve-cift',
+    slug: 'iliskiler-ve-cift',
   },
   {
+    id: 'f3',
     icon: 'monitor_heart',
     title: 'Psikosomatik ve Duygusal Zorluklar',
     description: 'Bedensel belirtiler, kronik ağrılar, kaygı, panik atak, depresyon ve yas.',
-    preview: ['Açıklanamayan ağrılar', 'Kaygı / panik atak', 'Depresyon', 'Kronik stres'],
-    href: '/calisma-alanlari/psikosomatik',
+    slug: 'psikosomatik',
   },
   {
+    id: 'f4',
     icon: 'psychiatry',
     title: 'Derinlemesine Çalıştığım Temalar',
     description: 'Tekrarlayan örüntüler, terk edilme korkusu, sınır koyamama, kimlik ve varoluşsal kaygılar.',
-    preview: ['Değersizlik duyguları', 'Terk edilme korkusu', 'Mükemmeliyetçilik', 'Ölüm korkusu'],
-    href: '/calisma-alanlari/derinlemesine-temalar',
+    slug: 'derinlemesine-temalar',
   },
 ]
 
-export default function CalısmaAlanlariPage() {
+export default async function CalısmaAlanlariPage() {
+  type Area = { id: string; icon: string; title: string; description: string | null; slug: string }
+  let areas: Area[] = fallbackAreas
+
+  try {
+    if (process.env.NEXT_PUBLIC_SUPABASE_URL) {
+      const { createClient } = await import('@/lib/supabase-server')
+      const supabase = await createClient()
+      const { data } = await supabase
+        .from('working_area_categories')
+        .select('id, title, slug, icon, description')
+        .eq('is_active', true)
+        .order('order')
+      if (data && data.length > 0) {
+        areas = data
+      }
+    }
+  } catch {
+    // Bağlantı hatasında varsayılanlar gösterilir
+  }
+
   return (
     <>
       {/* Hero */}
@@ -132,7 +150,7 @@ export default function CalısmaAlanlariPage() {
         </div>
       </section>
 
-      {/* Çalışma Alanları */}
+      {/* Çalışma Alanları (Supabase'den) */}
       <section className="py-section-gap-mobile md:py-section-gap-desktop bg-warm-sand/50">
         <div className="max-w-container-max mx-auto px-margin-mobile md:px-gutter">
           <div className="mb-12">
@@ -149,8 +167,8 @@ export default function CalısmaAlanlariPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {areas.map((area) => (
               <Link
-                key={area.title}
-                href={area.href}
+                key={area.id}
+                href={`/calisma-alanlari/${area.slug}`}
                 className="bg-surface rounded-xl p-8 border border-warm-sand soft-card-shadow hover-card-lift group block"
               >
                 <div className="flex items-start gap-4 mb-5">
@@ -158,19 +176,13 @@ export default function CalısmaAlanlariPage() {
                     <span className="material-symbols-outlined">{area.icon}</span>
                   </div>
                   <div>
-                    <h3 className="font-headline text-headline-md text-primary group-hover:text-ocean-muted transition-colors">{area.title}</h3>
-                    <p className="font-body text-body-md text-on-surface-variant mt-1">{area.description}</p>
+                    <h3 className="font-headline text-headline-md text-primary group-hover:text-ocean-muted transition-colors">
+                      {area.title}
+                    </h3>
+                    {area.description && (
+                      <p className="font-body text-body-md text-on-surface-variant mt-1">{area.description}</p>
+                    )}
                   </div>
-                </div>
-                <div className="flex flex-wrap gap-2 mb-5">
-                  {area.preview.map((item) => (
-                    <span key={item} className="px-3 py-0.5 rounded-full bg-warm-sand font-caption text-caption text-on-surface-variant">
-                      {item}
-                    </span>
-                  ))}
-                  <span className="px-3 py-0.5 rounded-full bg-warm-sand font-caption text-caption text-on-surface-variant">
-                    ...
-                  </span>
                 </div>
                 <span className="font-label text-label-md text-ocean-muted flex items-center gap-1 group-hover:text-primary transition-colors">
                   Tüm konuları gör
@@ -188,7 +200,7 @@ export default function CalısmaAlanlariPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
               { icon: 'schedule', title: 'Seans Süresi', desc: 'Her seans yaklaşık 50 dakikadır.' },
-              { icon: 'location_on', title: 'Hizmet Şekli', desc: 'Rize ve Trabzon\'da yüz yüze, Türkiye ve yurt dışına online.' },
+              { icon: 'location_on', title: 'Hizmet Şekli', desc: "Rize ve Trabzon'da yüz yüze, Türkiye ve yurt dışına online." },
               { icon: 'calendar_month', title: 'Randevu', desc: 'WhatsApp üzerinden hızla randevu oluşturabilirsiniz.' },
             ].map((item) => (
               <div key={item.title} className="bg-soft-mist rounded-xl p-6 border border-outline-variant flex items-start gap-4">

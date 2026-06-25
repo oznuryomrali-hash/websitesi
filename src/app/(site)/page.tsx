@@ -43,18 +43,46 @@ export const metadata: Metadata = {
   alternates: { canonical: '/' },
 }
 
+const defaultSectionOrder = ['hero', 'hakkimda', 'quote', 'blog', 'iletisim']
+
 export default async function HomePage() {
   const content = await getSiteContent()
   const posts = getAllPosts()
 
+  let sectionOrder = defaultSectionOrder
+
+  try {
+    if (process.env.NEXT_PUBLIC_SUPABASE_URL) {
+      const { createClient } = await import('@/lib/supabase-server')
+      const supabase = await createClient()
+      const { data } = await supabase
+        .from('homepage_sections')
+        .select('id')
+        .eq('is_visible', true)
+        .order('order')
+      if (data && data.length > 0) {
+        sectionOrder = data.map((s: { id: string }) => s.id)
+      }
+    }
+  } catch {
+    // Supabase erişimi yoksa varsayılan sıra kullanılır
+  }
+
+  function renderSection(id: string) {
+    switch (id) {
+      case 'hero': return <Hero key="hero" content={content} />
+      case 'hakkimda': return <AboutSection key="hakkimda" content={content} />
+      case 'quote': return <QuoteSection key="quote" />
+      case 'blog': return <BlogSlider key="blog" posts={posts} />
+      case 'iletisim': return <ContactSection key="iletisim" content={content} />
+      default: return null
+    }
+  }
+
   return (
     <>
       <JsonLd data={schema} />
-      <Hero content={content} />
-      <AboutSection content={content} />
-      <QuoteSection />
-      <BlogSlider posts={posts} />
-      <ContactSection content={content} />
+      {sectionOrder.map((id) => renderSection(id))}
     </>
   )
 }
