@@ -2,8 +2,7 @@ import Link from 'next/link'
 
 const quickLinks = [
   { label: 'Hakkımda', href: '/hakkimda' },
-  { label: 'Hizmetler', href: '/hizmetler' },
-  { label: 'Çalışma Alanları', href: '/calisma-alanlari' },
+  { label: 'Çalışma Alanlarım', href: '/calisma-alanlari' },
   { label: 'Blog', href: '/blog' },
   { label: 'İletişim', href: '/iletisim' },
 ]
