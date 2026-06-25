@@ -72,7 +72,7 @@ export default async function HomePage() {
     switch (id) {
       case 'hero': return <Hero key="hero" content={content} />
       case 'hakkimda': return <AboutSection key="hakkimda" content={content} />
-      case 'quote': return <QuoteSection key="quote" />
+      case 'quote': return <QuoteSection key="quote" content={content} />
       case 'blog': return <BlogSlider key="blog" posts={posts} />
       case 'iletisim': return <ContactSection key="iletisim" content={content} />
       default: return null

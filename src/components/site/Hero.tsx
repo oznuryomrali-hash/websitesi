@@ -34,10 +34,10 @@ export default function Hero({ content = {} }: Props) {
               WhatsApp ile Yaz
             </a>
             <Link
-              href="/hizmetler"
+              href="/calisma-alanlari"
               className="border-2 border-ocean-muted text-ocean-muted px-10 py-4 rounded-full font-label text-label-md transition-all duration-300 hover:bg-ocean-muted hover:text-on-primary"
             >
-              Hizmetleri Keşfet
+              Çalışma Alanlarım
             </Link>
           </div>
           <div className="flex justify-center gap-8 pt-8 text-on-surface-variant">

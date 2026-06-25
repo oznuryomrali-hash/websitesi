@@ -16,12 +16,20 @@ const staticPages = [
 ]
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const { getAllPosts } = await import('@/lib/posts')
-  const blogPages = getAllPosts().map((p) => ({
-    url: `${siteUrl}/blog/${p.slug}`,
-    priority: 0.7,
-    changeFrequency: 'weekly' as const,
-  }))
+  const blogPages: MetadataRoute.Sitemap = []
+  try {
+    const { getPublishedPosts } = await import('@/lib/blog')
+    const posts = await getPublishedPosts()
+    posts.forEach((p) => {
+      blogPages.push({
+        url: `${siteUrl}/blog/${p.slug}`,
+        priority: 0.7,
+        changeFrequency: 'weekly',
+      })
+    })
+  } catch {
+    // Supabase erişimi yoksa blog sayfaları sitemapa eklenmez
+  }
 
   // Supabase'den aktif çalışma alanı sayfaları
   const workingAreaPages: MetadataRoute.Sitemap = []

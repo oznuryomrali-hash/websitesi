@@ -12,6 +12,7 @@ const navGroups = [
       { label: 'Anasayfa', href: '/admin/anasayfa', icon: 'home' },
       { label: 'İçerik', href: '/admin/icerik', icon: 'edit_note' },
       { label: 'Çalışma Alanları', href: '/admin/calisma-alanlari', icon: 'category' },
+      { label: 'Eğitimlerim', href: '/admin/egitimlerim', icon: 'school' },
       { label: 'Menü', href: '/admin/menu', icon: 'menu' },
       { label: 'Tasarım', href: '/admin/tasarim', icon: 'palette' },
     ],

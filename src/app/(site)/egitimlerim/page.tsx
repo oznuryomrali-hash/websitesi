@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import ContactSection from '@/components/site/ContactSection'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: 'Eğitimlerim',
   description:
@@ -9,55 +11,44 @@ export const metadata: Metadata = {
   alternates: { canonical: '/egitimlerim' },
 }
 
-const trainings = [
-  {
-    title: 'Dinamik Bütüncül Terapi',
-    duration: '288 saat',
-    icon: 'psychology',
-  },
-  {
-    title: 'Aktarım Odaklı Terapi',
-    duration: '32 saat',
-    icon: 'connect_without_contact',
-  },
-  {
-    title: 'Psikoterapide Gelişimsel Yaklaşımlar',
-    duration: '10 ay',
-    icon: 'timeline',
-  },
-  {
-    title: 'Klinik Uygulamada Sanat Terapisi',
-    duration: '28 saat',
-    icon: 'palette',
-  },
-  {
-    title: 'Dışavurumcu Oyun Terapisi',
-    duration: '28 saat',
-    icon: 'toys',
-  },
-  {
-    title: 'Aile Danışmanlığı',
-    duration: '',
-    icon: 'family_restroom',
-  },
-  {
-    title: 'Dinamik Çift Terapisi Uygulama Kampı',
-    duration: '4 gün',
-    icon: 'favorite',
-  },
-  {
-    title: 'EMDR',
-    duration: '',
-    icon: 'visibility',
-  },
-  {
-    title: 'EFT (Duygusal Odak Terapisi)',
-    duration: '',
-    icon: 'self_improvement',
-  },
+interface Training {
+  id: string
+  title: string
+  duration: string
+  icon: string
+  order: number
+}
+
+const fallbackTrainings: Training[] = [
+  { id: '1', title: 'Dinamik Bütüncül Terapi', duration: '288 saat', icon: 'psychology', order: 0 },
+  { id: '2', title: 'Aktarım Odaklı Terapi', duration: '32 saat', icon: 'connect_without_contact', order: 1 },
+  { id: '3', title: 'Psikoterapide Gelişimsel Yaklaşımlar', duration: '10 ay', icon: 'timeline', order: 2 },
+  { id: '4', title: 'Klinik Uygulamada Sanat Terapisi', duration: '28 saat', icon: 'palette', order: 3 },
+  { id: '5', title: 'Dışavurumcu Oyun Terapisi', duration: '28 saat', icon: 'toys', order: 4 },
+  { id: '6', title: 'Aile Danışmanlığı', duration: '', icon: 'family_restroom', order: 5 },
+  { id: '7', title: 'Dinamik Çift Terapisi Uygulama Kampı', duration: '4 gün', icon: 'favorite', order: 6 },
+  { id: '8', title: 'EMDR', duration: '', icon: 'visibility', order: 7 },
+  { id: '9', title: 'EFT (Duygusal Odak Terapisi)', duration: '', icon: 'self_improvement', order: 8 },
 ]
 
-export default function EgitimlerimPage() {
+export default async function EgitimlerimPage() {
+  let trainings: Training[] = fallbackTrainings
+
+  try {
+    if (process.env.NEXT_PUBLIC_SUPABASE_URL) {
+      const { createClient } = await import('@/lib/supabase-server')
+      const supabase = await createClient()
+      const { data } = await supabase
+        .from('trainings')
+        .select('id, title, duration, icon, order')
+        .eq('is_active', true)
+        .order('order')
+      if (data && data.length > 0) trainings = data
+    }
+  } catch {
+    // Fallback to hardcoded list
+  }
+
   return (
     <>
       <div className="pt-32 pb-16 md:pt-40 md:pb-20 bg-warm-sand/50">
@@ -88,7 +79,7 @@ export default function EgitimlerimPage() {
             <div className="space-y-4">
               {trainings.map((training, index) => (
                 <div
-                  key={training.title}
+                  key={training.id}
                   className="flex items-center gap-6 bg-surface rounded-xl p-6 border border-warm-sand soft-card-shadow group"
                 >
                   <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center text-primary flex-shrink-0 group-hover:bg-primary group-hover:text-on-primary transition-all duration-300">
